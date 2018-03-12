@@ -102,6 +102,24 @@ mf.comp.SocialSignin = class extends Frame {
             throw e;
         }
     }
+    
+    width (prm) {
+        try {
+            let ret = super.width(prm);
+            if ( (undefined !== prm) && ('number' === typeof prm) ) {
+                let chd = this.child();
+                for (let cidx in chd) {
+                    if (true === mf.func.isInclude(chd[cidx], 'Text')) {
+                        chd[cidx].size(prm/10);
+                    }
+                }
+            }
+            return ret;
+        } catch (e) {
+            console.error(e.stack);
+            throw e;
+        }
+    }
 }
 module.exports = mofron.comp.SocialSignin;
 /* end of file */
