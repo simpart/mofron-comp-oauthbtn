@@ -3,6 +3,7 @@
  * @author simpart
  */
 let mf = require('mofron');
+let Text   = require('mofron-comp-text');
 let Frame  = require('mofron-comp-frame');
 let Margin = require('mofron-layout-margin');
 let tHoriz = require('mofron-effect-txthoriz');
@@ -69,6 +70,33 @@ mf.comp.SocialSignin = class extends Frame {
     
     text (prm) {
         try {
+            if (undefined === prm) {
+                /* getter */
+                let chd = this.child();
+                for (let cidx in chd) {
+                    if (true === mf.func.isInclude(chd[cidx], 'Text')) {
+                        return chd[cidx];
+                    }
+                }
+                return null;
+            }
+            /* setter */
+            let set_txt = null;
+            if ('string' === typeof prm) {
+                if (null === this.text()) {
+                    this.addChild(new Text(prm));
+                } else {
+                    this.text().text(prm);
+                }
+            } else if (true === mf.func.isInclude(prm, 'Text')) {
+                if (null === this.text()) {
+                    this.addChild(prm);
+                } else {
+                    this.updChild(this.text(), prm);
+                }
+            } else {
+                throw new Error('invalid parameter');
+            }
         } catch (e) {
             console.error(e.stack);
             throw e;
